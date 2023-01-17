@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
@@ -33,8 +34,9 @@ class ProjectController extends Controller
     public function create(Project $project)
     {
         $types = Type::All();
+        $technologies = Technology::all();
         // dd($types);
-        return view('admin.projects.create', compact('types', 'project'));
+        return view('admin.projects.create', compact('types', 'project', 'technologies'));
     }
 
     /**

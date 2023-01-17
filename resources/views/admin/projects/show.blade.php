@@ -19,6 +19,10 @@
                     <strong>type:</strong>
                     {{ $project->type_id ? $project->type->name : ' No type match' }}
                 </div>
+                <div class="technologies">
+                    <strong>Technologies:</strong>
+                    {{ $project->technology->id ? $project->technology->name : ' No type match' }}
+                </div>
             </div>
         </div>
 

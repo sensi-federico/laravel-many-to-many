@@ -40,6 +40,21 @@
                 {{ $message }}
             </div>
         @enderror
+
+
+        <div class="mb-3">
+            <label for="technologies" class="form-label">Technologies</label>
+            <select multiple class="form-select form-select-sm" name="technologies[]" id="technologies">
+                <option disabled>Select one</option>
+                @foreach ($technologies as $technology)
+                    <option value="{{ $technology->id }}">{{ $technology->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+
+
+
         <button type="submit" class="btn btn-primary mt-3">Create</button>
     </form>
 @endsection
