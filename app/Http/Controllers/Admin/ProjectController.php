@@ -59,7 +59,9 @@ class ProjectController extends Controller
         $val_data['cover'] = $cover;
 
         $project = Project::create($val_data);
-        // dd($request->all);
+        $project->technologies()->attach($request->technologies);
+
+        // dd($request->all());
 
         return to_route('admin.projects.index')->with('message', "$project->title added successfully");
     }
@@ -134,10 +136,6 @@ class ProjectController extends Controller
             'overview' => 'nullable',
             'cover' => 'nullable|image|max:500',
             'type_id' => 'nullable|exists:types,id'
-        ], [
-            'title.required' => 'Il titolo é obbligatorio',
-            'title.min' => 'Il titolo deve essere almeno :min caratteri',
-            'title.max' => 'Il titolo deve essere almeno :max caratteri'
         ])->validate();
 
         return $validator;
