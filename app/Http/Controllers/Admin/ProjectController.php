@@ -59,7 +59,11 @@ class ProjectController extends Controller
         $val_data['cover'] = $cover;
 
         $project = Project::create($val_data);
-        $project->technologies()->attach($request->technologies);
+
+        // attach the selected technologies
+        if ($request->has('technologies')) {
+            $project->technologies()->attach($val_data['technologies']);
+        }
 
         // dd($request->all());
 
@@ -87,7 +91,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -103,9 +108,17 @@ class ProjectController extends Controller
         $project_slug = Str::slug($val_data['title']);
         $val_data['slug'] = $project_slug;
 
-        // dd($request->type);
 
         $project->update($val_data);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($val_data['technologies']);
+        } else {
+            $project->technologies()->sync([]);
+        }
+
+
+        // dd($request->all());
 
         return to_route('admin.projects.index')->with('message', "$project->title added successfully");
     }
@@ -135,7 +148,8 @@ class ProjectController extends Controller
             'title' => 'required|min:5|max:100',
             'overview' => 'nullable',
             'cover' => 'nullable|image|max:500',
-            'type_id' => 'nullable|exists:types,id'
+            'type_id' => 'nullable|exists:types,id',
+            'technologies' => 'nullable|exists:technologies,id'
         ])->validate();
 
         return $validator;
